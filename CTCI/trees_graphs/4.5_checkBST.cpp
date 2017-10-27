@@ -4,7 +4,7 @@
 using namespace std;
 
 /*4.5 Implement a function to check if a binary tree is a binary search tree.
- time complexity: O(n), space complexity:O(log n)- due to recursive call*/
+ time complexity: O(n), space complexity:O(log n)- due to recursive call if not considered its O(1)*/
 
 
 struct BinaryTreeNode{
@@ -40,11 +40,11 @@ public:
 class solution
 {
 public:
-    bool checkIfBST(BinaryTreeNode * head);
+    bool checkIfBST(BinaryTreeNode * head, int min, int max);
 };
 
 
-bool solution::checkIfBST(BinaryTreeNode * head)
+bool solution::checkIfBST(BinaryTreeNode * head, int min,int max)
 {
  
     if(head == NULL)
@@ -52,17 +52,14 @@ bool solution::checkIfBST(BinaryTreeNode * head)
         return true;
     }
     
-    if(head->left != NULL && head->right  != NULL)
+    
+    if(head->data < min || head->data > max)
+        
     {
-       //cout<<head->left->data<<" "<<head->data<<" "<< head->right->data<<endl;
-        if((head->left->data > head->data) || (head->right->data <= head->data))
-        {
-            //cout<<head->left->data<<" "<<head->data<<" "<< head->right->data<<endl;
-            return false;
-        }
+        return false;
     }
     
-    return (checkIfBST(head->left) && checkIfBST(head->right));
+    return (checkIfBST(head->left,min,head->data-1) && checkIfBST(head->right, head->data+1, max));
     
 }
 
@@ -90,7 +87,7 @@ int main()
     
     //node4->right = node5;
     //node5->right = node6;
-    cout<<tp.checkIfBST(head);
+    cout<<tp.checkIfBST(head, INT_MIN, INT_MAX);
     
     
     return 0;
